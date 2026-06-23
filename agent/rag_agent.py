@@ -23,10 +23,10 @@ Node properties: paperId, title, year, abstract, authors, citationCount, url
 Relationship: (Paper)-[:CITES]->(Paper) means "this paper cites that paper"
 
 Rules:
-- For general title matching, use CONTAINS. Example: WHERE toLower(p.title) CONTAINS toLower('Attention')
+- For title matching, ALWAYS use case-insensitive matching. Use toLower(p.title) CONTAINS 'lowercase_term' or case-insensitive regex to avoid missing papers due to capitalization.
 - For short acronyms or titles (e.g., 'BERT', 'RAG'), ALWAYS use case-insensitive regex word boundaries to prevent matching sub-strings in other words. Example: WHERE p.title =~ '(?i).*\\\\bBERT\\\\b.*'
 - For "foundational" or "must read" → find papers with highest in-degree (most cited)
-- For "path" questions → use shortestPath() and find start/end nodes using a WHERE clause with regex or CONTAINS. Example: MATCH (a:Paper), (b:Paper) WHERE a.title =~ '(?i).*\\\\bBERT\\\\b.*' AND b.title =~ '(?i).*\\\\bAttention\\\\b.*' MATCH path = shortestPath((a)-[:CITES*]-(b)) RETURN [n IN nodes(path) | n.title + ' (' + n.year + ')'] AS citation_chain
+- For "path" questions → use shortestPath() and find start/end nodes using a case-insensitive WHERE clause. Example: MATCH (a:Paper), (b:Paper) WHERE toLower(a.title) CONTAINS 'bert' AND toLower(b.title) CONTAINS 'attention is all you need' MATCH path = shortestPath((a)-[:CITES*]-(b)) RETURN [n IN nodes(path) | n.title + ' (' + n.year + ')'] AS citation_chain
 - For "influenced by" → traverse [:CITES] outward from the paper
 - For "what cites X" → traverse [:CITES] inward to the paper
 - Always RETURN paper titles and years
