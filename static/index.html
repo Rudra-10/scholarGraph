@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ScholarGraph — Citation Intelligence</title>
     <link rel="stylesheet" href="/static/style.css?v=5">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
     <script src="https://unpkg.com/vis-network@9.1.9/standalone/umd/vis-network.min.js"></script>
+    <link rel="icon" href="/static/icon.png" type="image/png">
 </head>
+
 <body>
 
     <!-- ═══════════ LANDING SCREEN ═══════════ -->
@@ -23,13 +28,18 @@
 
             <h1 class="headline">Every paper has<br>an <em>ancestry.</em></h1>
 
-            <p class="sub">Trace the directed graph of ideas behind any research paper — not by similarity, but by the literal citations that built it.</p>
+            <p class="sub">Trace the directed graph of ideas behind any research paper — not by similarity, but by the
+                literal citations that built it.</p>
 
             <div class="input-row">
-                <input type="text" id="landing-arxiv-input" placeholder="paste an arXiv ID, e.g. 1706.03762" autocomplete="off">
+                <input type="text" id="landing-arxiv-input" placeholder="paste an arXiv ID, e.g. 1706.03762"
+                    autocomplete="off">
                 <button id="landing-trace-btn" class="btn btn-primary">
                     <span>Trace lineage</span>
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+                        <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
                 </button>
             </div>
 
@@ -73,7 +83,10 @@
 
                 <button id="build-graph-btn" class="btn btn-primary btn-full">
                     <span>Build graph</span>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                        <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
                 </button>
             </div>
 
@@ -81,9 +94,11 @@
 
             <div class="sidebar-section">
                 <div class="sidebar-label">Quick start</div>
-                <button class="example-row" data-id="1706.03762"><code>1706.03762</code><span>Attention Is All You Need</span></button>
+                <button class="example-row" data-id="1706.03762"><code>1706.03762</code><span>Attention Is All You
+                        Need</span></button>
                 <button class="example-row" data-id="1810.04805"><code>1810.04805</code><span>BERT</span></button>
-                <button class="example-row" data-id="2005.11401"><code>2005.11401</code><span>RAG (Lewis et al.)</span></button>
+                <button class="example-row" data-id="2005.11401"><code>2005.11401</code><span>RAG (Lewis et
+                        al.)</span></button>
             </div>
         </aside>
 
@@ -96,13 +111,20 @@
             <div class="panels">
                 <div class="panel graph-panel">
                     <div class="panel-label">
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="6" cy="6" r="3" stroke="currentColor" stroke-width="2"/><circle cx="18" cy="6" r="3" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="18" r="3" stroke="currentColor" stroke-width="2"/><path d="M8.5 7.5L15.5 7.5M9 8.5L11 16M15 8.5L13 16" stroke="currentColor" stroke-width="1.5"/></svg>
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+                            <circle cx="6" cy="6" r="3" stroke="currentColor" stroke-width="2" />
+                            <circle cx="18" cy="6" r="3" stroke="currentColor" stroke-width="2" />
+                            <circle cx="12" cy="18" r="3" stroke="currentColor" stroke-width="2" />
+                            <path d="M8.5 7.5L15.5 7.5M9 8.5L11 16M15 8.5L13 16" stroke="currentColor"
+                                stroke-width="1.5" />
+                        </svg>
                         Citation graph
                     </div>
                     <div id="graph-container">
                         <div id="graph-loading-state" class="loading-overlay" style="display:none;">
                             <div class="spinner"></div>
-                            <p class="mono-caption" style="margin: 0; color: var(--amber);">Crawling citation network...</p>
+                            <p class="mono-caption" style="margin: 0; color: var(--amber);">Crawling citation network...
+                            </p>
                         </div>
                         <div id="graph-empty-state" class="empty-state">
                             <p>No graph data yet. Ingest a paper to get started.</p>
@@ -114,22 +136,31 @@
 
                 <div class="panel chat-panel">
                     <div class="panel-label">
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" stroke="currentColor" stroke-width="1.5"/></svg>
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"
+                                stroke="currentColor" stroke-width="1.5" />
+                        </svg>
                         Ask the graph
                     </div>
                     <div id="chat-messages" class="chat-messages"></div>
                     <div class="chat-input-row">
                         <button id="chat-mic-btn" class="mic-btn" title="Record Question">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
-                                <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-                                <line x1="12" y1="19" x2="12" y2="22"/>
-                                <line x1="8" y1="22" x2="16" y2="22"/>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+                                <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                                <line x1="12" y1="19" x2="12" y2="22" />
+                                <line x1="8" y1="22" x2="16" y2="22" />
                             </svg>
                         </button>
-                        <input type="text" id="chat-input" placeholder="Ask anything about the papers..." autocomplete="off">
+                        <input type="text" id="chat-input" placeholder="Ask anything about the papers..."
+                            autocomplete="off">
                         <button id="chat-send-btn" class="send-btn">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
                         </button>
                     </div>
                 </div>
@@ -142,4 +173,5 @@
 
     <script src="/static/app.js"></script>
 </body>
+
 </html>
