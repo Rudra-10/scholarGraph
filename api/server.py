@@ -192,6 +192,35 @@ def test_sarvam():
     return results
 
 
+@app.get("/api/debug")
+def debug():
+    try:
+        client = Neo4jClient()
+        # Find BERT papers
+        bert = client.run_query("MATCH (p:Paper) WHERE toLower(p.title) CONTAINS 'bert' RETURN p.title AS title, p.paperId AS id, p.year AS year LIMIT 5")
+        # Find Attention papers
+        attention = client.run_query("MATCH (p:Paper) WHERE toLower(p.title) CONTAINS 'attention' RETURN p.title AS title, p.paperId AS id, p.year AS year LIMIT 5")
+        # Find shortest path between them (undirected)
+        path = client.run_query("""
+            MATCH (a:Paper), (b:Paper) 
+            WHERE toLower(a.title) CONTAINS 'bert' AND toLower(b.title) CONTAINS 'attention is all you need'
+            MATCH p = shortestPath((a)-[:CITES*]-(b)) 
+            RETURN [n IN nodes(p) | n.title + ' (' + n.year + ')'] AS path
+            LIMIT 1
+        """)
+        # Count total papers and citations
+        counts = client.run_query("MATCH (p:Paper) OPTIONAL MATCH (p)-[r:CITES]->() RETURN count(p) AS papers, count(r) AS citations")
+        client.close()
+        return {
+            "papers_in_db": counts[0] if counts else None,
+            "bert_papers": bert,
+            "attention_papers": attention,
+            "path_found": path[0]["path"] if path else None
+        }
+    except Exception as e:
+        return {"error": str(e)}
+
+
 # ── Serve the frontend ───────────────────────────────────────
 static_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "static")
 
