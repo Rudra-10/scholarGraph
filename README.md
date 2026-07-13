@@ -1,4 +1,4 @@
-# 🎓 ScholarGraph — Autonomous Citation Intelligence Engine
+#  ScholarGraph — Autonomous Citation Intelligence Engine
 
 > An autonomous citation exploration and Graph RAG engine that maps, crawls, and queries the academic ancestry of scientific research. Built using **Neo4j AuraDB**, **Sarvam AI**, and **LangGraph**.
 
@@ -6,14 +6,14 @@ Developed for **HackHazards 2026** (Learning & Knowledge Systems Track / Neo4j &
 
 ---
 
-## 🔗 Live Application & Demo
+##  Live Application & Demo
 
 * **Deployed Web Application:** [https://scholargraph-mygi.onrender.com/](https://scholargraph-mygi.onrender.com/)
 * **Neo4j Graph Database:** Cloud hosted via Neo4j AuraDB
 
 ---
 
-## ✨ Key Features
+##  Key Features
 
 * **Directed Citation Crawling (BFS):** Recursively traverses reference chains from any seed arXiv ID using a structured state machine orchestration built on **LangGraph**.
 * **Neo4j Graph Database Integration:** Stores papers and their relationships structurally as `(:Paper)-[:CITES]->(:Paper)` to support deterministic graph traversals.
@@ -26,7 +26,7 @@ Developed for **HackHazards 2026** (Learning & Knowledge Systems Track / Neo4j &
 
 ---
 
-## 🛠️ Technology Stack
+##  Technology Stack
 
 * **Frontend:** Vanilla HTML5, Modern HSL/CSS variables, JavaScript (ES6+), vis-network (node-graph visualization).
 * **Backend:** FastAPI (Python 3.13), Uvicorn.
@@ -36,7 +36,7 @@ Developed for **HackHazards 2026** (Learning & Knowledge Systems Track / Neo4j &
 
 ---
 
-## 📂 Repository Structure
+##  Repository Structure
 
 ```text
 scholarGraph/
@@ -67,7 +67,7 @@ scholarGraph/
 
 ---
 
-## 🚀 Setup & Installation
+##  Setup & Installation
 
 ### Prerequisites
 * **Python 3.13+** (Windows users: Ensure `numpy >= 2.2.6` for compatibility)
@@ -115,7 +115,7 @@ Open your browser at `http://127.0.0.1:8000` to interact with the application.
 
 ---
 
-## 💬 Sample Graph RAG Queries to Try
+##  Sample Graph RAG Queries to Try
 
 Once the database is seeded or a graph is built, try these queries in the **Ask the Graph** chat panel:
 1. **Citation Paths (Undirected/Directed Graph Traversals):**
@@ -130,7 +130,7 @@ Once the database is seeded or a graph is built, try these queries in the **Ask 
 
 ---
 
-## 🏆 Hackathon Sponsor Track Features
+##  Hackathon Sponsor Track Features
 
 ### Neo4j AuraDB Integration
 * Models papers as nodes and citations as relationships: `(a:Paper)-[:CITES]->(b:Paper)`.
