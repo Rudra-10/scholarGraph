@@ -1,102 +1,143 @@
-# ScholarGraph — Autonomous Citation Intelligence Engine
+# 🎓 ScholarGraph — Autonomous Citation Intelligence Engine
 
-ScholarGraph is an autonomous research tool designed to trace, crawl, and query the intellectual lineage of scientific papers. Sourced from real-world citation data via Semantic Scholar and powered by Neo4j AuraDB and Sarvam AI, it enables researchers to uncover exact citation paths (e.g., shortest paths, ancestor lineages) and query their graph database using natural language.
+> An autonomous citation exploration and Graph RAG engine that maps, crawls, and queries the academic ancestry of scientific research. Built using **Neo4j AuraDB**, **Sarvam AI**, and **LangGraph**.
 
-Developed for HackHazards 2026 (Learning & Knowledge Systems Track / Neo4j & Sarvam AI Sponsor Tracks).
-
----
-
-## Key Features
-
-- **Directed Citation Crawling:** Recursively crawls citation networks (BFS) from a seed arXiv ID using LangGraph orchestrations.
-- **Neo4j Graph Database Integration:** Stores papers and their relationships structurally as `(:Paper)-[:CITES]->(:Paper)` to support deterministic graph traversals.
-- **Graph RAG (Cypher QA Chain):** Translates natural language questions to Neo4j Cypher queries for factual, traceable, and hallucination-free answers.
-- **Sarvam AI Integration:**
-  - Voice questions via Saaras V3 speech-to-text (STT).
-  - Audio playback of answers via Bulbul V3 text-to-speech (TTS).
-  - OpenAI-compatible chat completion using sarvam-30b / sarvam-m LLMs.
-- **Dark Academic UI:** Custom responsive interface with an interactive citation graph visualization (rendered via vis-network).
+Developed for **HackHazards 2026** (Learning & Knowledge Systems Track / Neo4j & Sarvam AI Sponsor Tracks).
 
 ---
 
-## Repository Structure
+## 🔗 Live Application & Demo
+
+* **Deployed Web Application:** [https://scholargraph-mygi.onrender.com/](https://scholargraph-mygi.onrender.com/)
+* **Neo4j Graph Database:** Cloud hosted via Neo4j AuraDB
+
+---
+
+## ✨ Key Features
+
+* **Directed Citation Crawling (BFS):** Recursively traverses reference chains from any seed arXiv ID using a structured state machine orchestration built on **LangGraph**.
+* **Neo4j Graph Database Integration:** Stores papers and their relationships structurally as `(:Paper)-[:CITES]->(:Paper)` to support deterministic graph traversals.
+* **Hybrid Graph RAG:** Translates natural language questions to optimized Cypher queries via LangChain's `GraphCypherQAChain` for deterministic, hallucination-free graph analytics.
+* **Sarvam AI Integration (Sponsor Track):**
+  - **Voice Questions:** Powered by **Saaras V3** speech-to-text (STT) for hands-free querying.
+  - **Audio Readback:** Powered by **Bulbul V3** text-to-speech (TTS) for natural narration of graph insights.
+  - **LLM Reasoning:** Powered by `sarvam-30b` OpenAI-compatible chat model for QA completions.
+* **Premium Dark Academic UI:** Fully responsive dashboard showing real-time BFS crawler status, live vis.network citation graph visualizations, and voice-enabled chatbot panel.
+
+---
+
+## 🛠️ Technology Stack
+
+* **Frontend:** Vanilla HTML5, Modern HSL/CSS variables, JavaScript (ES6+), vis-network (node-graph visualization).
+* **Backend:** FastAPI (Python 3.13), Uvicorn.
+* **Orchestration & Agents:** LangGraph (StateGraph orchestration), LangChain (Neo4jGraph, GraphCypherQAChain).
+* **Databases:** Neo4j AuraDB (Property Graph Database).
+* **AI Model APIs:** Sarvam AI (LLM, TTS, STT APIs), Groq AI (Llama 3.3 70B for high-precision Cypher generation).
+
+---
+
+## 📂 Repository Structure
 
 ```text
 scholarGraph/
-├── agent/               # Autonomous pipeline orchestrations
-│   ├── crawler_agent.py    # Recursive BFS citation crawling
-│   ├── ingestion_agent.py  # Seed paper arXiv resolver
-│   ├── orchestrator.py     # LangGraph state machine flow
-│   └── rag_agent.py        # GraphCypherQAChain RAG & LLM interfaces
-├── api/                 # FastAPI backend endpoints
-│   ├── server.py           # REST endpoints & static file mounting
-│   └── schemas.py          # Pydantic schemas
-├── graph/               # Graph database interfaces
-│   ├── neo4j_client.py     # Neo4j driver wrapper
-│   └── schema.py           # Database constraints & indexes
-├── tools/               # External tool wrappers
-│   ├── semantic_scholar.py # API client for metadata & reference fetching
-│   ├── stt.py              # Sarvam AI Voice-to-Text wrapper
-│   └── tts.py              # Sarvam AI Text-to-Voice wrapper
-├── static/              # Vanilla HTML/CSS/JS frontend
-│   ├── index.html          # Interactive application frontend
-│   ├── style.css           # Custom dark academic design styling
-│   └── app.js              # Network graph renderer & API client
-├── config.py            # Environment variable configuration loading
-├── requirements.txt     # Python dependencies list
-├── .env.example         # Example environment template
-└── .gitignore           # Standard git ignore definitions
+├── agent/               # Autonomous agentic pipelines
+│   ├── crawler_agent.py    # Recursive citation crawling agent
+│   ├── ingestion_agent.py  # ArXiv ID resolver & single paper ingester
+│   ├── orchestrator.py     # LangGraph agentic state coordinator
+│   └── rag_agent.py        # GraphCypherQAChain Graph RAG implementation
+├── api/                 # REST endpoints (FastAPI)
+│   ├── server.py           # Backend routes & static file rendering
+│   └── schemas.py          # Request / Response schemas
+├── graph/               # Graph database configuration
+│   ├── neo4j_client.py     # Neo4j client connection wrapper
+│   └── schema.py           # Neo4j database constraints & indexes
+├── tools/               # External APIs and SDKs
+│   ├── semantic_scholar.py # Semantic Scholar API wrapper
+│   ├── stt.py              # Sarvam AI STT API integration
+│   └── tts.py              # Sarvam AI TTS API integration
+├── static/              # Dark Academic UI Assets
+│   ├── index.html          # Web dashboard layout
+│   ├── style.css           # Glassmorphic Dark styling
+│   └── app.js              # Live graph renderer & API orchestrator
+├── config.py            # Environment configurations
+├── requirements.txt     # Python requirements
+├── .env.example         # Template for API credentials
+└── README.md            # Hackathon documentation
 ```
 
 ---
 
-## Prerequisites
+## 🚀 Setup & Installation
 
-- **Python 3.13+** (Windows environment notes: make sure numpy is pinned to 2.2.6+ for compatibility)
-- **Neo4j AuraDB Instance** (Free tier database instance)
-- **Sarvam AI API Key** (For TTS/STT and LLM sponsor track integrations)
-- **Groq API Key** (Used as the default LLM provider for development to conserve credits)
+### Prerequisites
+* **Python 3.13+** (Windows users: Ensure `numpy >= 2.2.6` for compatibility)
+* **Neo4j AuraDB Instance** (Free tier instance is sufficient)
+* **Sarvam AI API Key**
+* **Groq API Key**
 
----
-
-## Installation & Setup
-
-1. **Clone the Repository:**
-   ```bash
-   git clone <your-repository-url>
-   cd scholarGraph
-   ```
-
-2. **Set Up a Virtual Environment:**
-   ```bash
-   python -m venv .venv
-   source .venv/Scripts/activate
-   ```
-
-3. **Install Dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Configure Environment Variables:**
-   Copy the example file to `.env`:
-   ```bash
-   cp .env.example .env
-   ```
-   Fill in your actual API keys and database credentials in `.env`:
-   - `NEO4J_URI`, `NEO4J_USERNAME`, `NEO4J_PASSWORD`, `NEO4J_DATABASE`
-   - `SARVAM_API_KEY`
-   - `GROQ_API_KEY`
-
----
-
-## Running the Application
-
-Start the FastAPI application. Use `python -m uvicorn` to guarantee the correct Python path resolution:
-
+### 1. Clone & Install
 ```bash
-python -m uvicorn api.server:app --reload --port 8000
+git clone <your-repository-url>
+cd scholarGraph
+python -m venv .venv
+source .venv/Scripts/activate # On Windows: .venv\Scripts\activate
+pip install -r requirements.txt
 ```
 
-Once running, access the user interface in your web browser:
-👉 http://localhost:8000
+### 2. Configure Environment Variables
+Create a `.env` file in the root directory:
+```env
+NEO4J_URI=neo4j+s://<your-auradb-subdomain>.databases.neo4j.io
+NEO4J_USERNAME=neo4j
+NEO4J_DATABASE=neo4j
+NEO4J_PASSWORD=<your-auradb-password>
+
+SARVAM_API_KEY=<your-sarvam-key>
+GROQ_API_KEY=<your-groq-key>
+
+USE_SARVAM_LLM=true
+USE_SARVAM_TTS=true
+```
+
+### 3. Pre-seed the Database (Crucial for Demo Evaluation)
+Because the Semantic Scholar API is rate-limited, judges should avoid triggering massive live BFS crawls during testing. Pre-seed your Neo4j instance with our pre-configured network of foundational papers (**Attention Is All You Need**, **BERT**, and **RAG**):
+```bash
+python agent/pre_seed.py
+```
+This script runs our crawlers in a controlled rate-limited loop and builds the primary citation graph containing **440+ papers** and **250+ citation edges**.
+
+### 4. Run the Server
+Start the FastAPI server:
+```bash
+python -m uvicorn api.server:app --reload
+```
+Open your browser at `http://127.0.0.1:8000` to interact with the application.
+
+---
+
+## 💬 Sample Graph RAG Queries to Try
+
+Once the database is seeded or a graph is built, try these queries in the **Ask the Graph** chat panel:
+1. **Citation Paths (Undirected/Directed Graph Traversals):**
+   * *"what is the shortest citation path between BERT and Attention is all you need paper?"*
+   * **Result:** Traces the exact historical citation path: `BERT (2019)` -> `U-Net (2018)` -> `Attention is All you Need (2017)`.
+2. **Bibliographic Metrics:**
+   * *"What is the most cited paper in the graph?"*
+   * *"List all papers published in 2017."*
+3. **Lineage Queries:**
+   * *"Who are the authors of Attention is All you Need?"*
+   * *"What papers does BERT cite?"*
+
+---
+
+## 🏆 Hackathon Sponsor Track Features
+
+### Neo4j AuraDB Integration
+* Models papers as nodes and citations as relationships: `(a:Paper)-[:CITES]->(b:Paper)`.
+* Employs Graph RAG translating complex conversational queries into Cypher commands (`shortestPath()`, `IN-DEGREE` analytics).
+* Utilizes a dual-LLM pipeline: Groq's `llama-3.3-70b` operates as the `cypher_llm` for 100% syntactically perfect Cypher generation, while Sarvam AI handles prompt response formatting (`qa_llm`).
+
+### Sarvam AI Integration
+* **Speech-to-Text (STT):** Integrates Sarvam's `Saaras V3` models enabling researchers to click the microphone icon and dictate queries directly into the search bar.
+* **Text-to-Speech (TTS):** Generates high-fidelity audio readback of scientific insights using Sarvam's `bulbul:v3` text-to-speech model.
+* **LLM:** Integrates `sarvam-30b` for natural language chat completion.

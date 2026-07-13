@@ -82,8 +82,21 @@ class RAGAgent:
                 temperature=0,
             )
 
+        # Define LLM for Cypher query generation (use Groq if available for code precision, otherwise fallback)
+        if GROQ_API_KEY:
+            print("[RAG] Using Groq LLM for Cypher query generation")
+            cypher_llm = ChatGroq(
+                model="llama-3.3-70b-versatile",
+                api_key=GROQ_API_KEY,
+                temperature=0,
+            )
+        else:
+            print("[RAG] Falling back to primary LLM for Cypher query generation")
+            cypher_llm = self.llm
+
         self.chain = GraphCypherQAChain.from_llm(
-            llm=self.llm,
+            cypher_llm=cypher_llm,
+            qa_llm=self.llm,
             graph=self.graph,
             cypher_prompt=CYPHER_PROMPT,
             qa_prompt=QA_PROMPT,
