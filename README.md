@@ -10,6 +10,7 @@ Developed for **HackHazards 2026** (Learning & Knowledge Systems Track / Neo4j &
 
 * **Deployed Web Application:** [https://scholargraph-mygi.onrender.com/](https://scholargraph-mygi.onrender.com/)
 * **Neo4j Graph Database:** Cloud hosted via Neo4j AuraDB
+* **Demo Video:** [https://www.youtube.com/watch?v=ZoJ0ul_8BbY]
 
 ---
 
@@ -99,14 +100,7 @@ USE_SARVAM_LLM=true
 USE_SARVAM_TTS=true
 ```
 
-### 3. Pre-seed the Database (Crucial for Demo Evaluation)
-Because the Semantic Scholar API is rate-limited, judges should avoid triggering massive live BFS crawls during testing. Pre-seed your Neo4j instance with our pre-configured network of foundational papers (**Attention Is All You Need**, **BERT**, and **RAG**):
-```bash
-python agent/pre_seed.py
-```
-This script runs our crawlers in a controlled rate-limited loop and builds the primary citation graph containing **440+ papers** and **250+ citation edges**.
-
-### 4. Run the Server
+### 3. Run the Server
 Start the FastAPI server:
 ```bash
 python -m uvicorn api.server:app --reload
@@ -117,12 +111,11 @@ Open your browser at `http://127.0.0.1:8000` to interact with the application.
 
 ##  Sample Graph RAG Queries to Try
 
-Once the database is seeded or a graph is built, try these queries in the **Ask the Graph** chat panel:
+Once a graph is built, try these queries in the **Ask the Graph** chat panel:
 1. **Citation Paths (Undirected/Directed Graph Traversals):**
    * *"what is the shortest citation path between BERT and Attention is all you need paper?"*
    * **Result:** Traces the exact historical citation path: `BERT (2019)` -> `U-Net (2018)` -> `Attention is All you Need (2017)`.
 2. **Bibliographic Metrics:**
-   * *"What is the most cited paper in the graph?"*
    * *"List all papers published in 2017."*
 3. **Lineage Queries:**
    * *"Who are the authors of Attention is All you Need?"*
